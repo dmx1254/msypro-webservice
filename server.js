@@ -28,25 +28,28 @@ app.get("/api", (req, res) => {
 });
 app.get("/api/:date", function (req, res) {
   const { date } = req.params;
-  const isValidDate = Date.parse(date);
-
-  if (!isNaN(isValidDate)) {
-    try {
-      if (date.includes("-")) {
+  try {
+    if (date.includes("-")) {
+      const isValidDate = Date.parse(date);
+      if (!isNaN(isValidDate)) {
         const myDateunix = new Date(date).getTime();
         const myDateUtc = new Date(date).toUTCString();
         res.json({ unix: myDateunix, utc: myDateUtc });
       } else {
-        const dater = parseInt(date);
+        res.json({ error: "Invalid Date" });
+      }
+    } else {
+      const dater = parseInt(date);
+      if (new Date(dater).getTime() > 0) {
         const newDateunix = new Date(dater).getTime();
         const newDateUtc = new Date(dater).toUTCString();
         res.json({ unix: newDateunix, utc: newDateUtc });
+      } else {
+        res.json({ error: "Invalid Date" });
       }
-    } catch (error) {
-      console.log(error);
     }
-  } else {
-    res.json({ error: "Invalid Date" });
+  } catch (error) {
+    console.log(error);
   }
 });
 
