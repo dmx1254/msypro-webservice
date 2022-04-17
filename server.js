@@ -30,7 +30,7 @@ app.get("/api/:date", function (req, res) {
   const { date } = req.params;
   try {
     if (date.includes("-")) {
-      const isValidDate = Date.parse(date);
+       const isValidDate = new Date(date);
       if (!isNaN(isValidDate)) {
         const myDateunix = new Date(date).getTime();
         const myDateUtc = new Date(date).toUTCString();
